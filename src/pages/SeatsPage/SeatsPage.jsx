@@ -1,30 +1,56 @@
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom"
 import styled from "styled-components"
+import axios from "axios";
 
 export default function SeatsPage() {
+
+    const [seats, setSeats] = useState(undefined);
+
+    const parametros = useParams();
+    console.log(parametros);
+
+     useEffect(() => {
+
+         const url = `https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${parametros.idSessao}/seats`;
+
+         const promise = axios.get(url);
+
+         promise.then(resposta => {
+             console.log(resposta.data);
+
+             setSeats(resposta.data)
+
+         });
+         promise.catch(erro => console.log(erro.response.data));
+
+     }, []);
+
+     if (seats === undefined) {
+        return <div>Carregando.....</div>
+    }
 
     return (
         <PageContainer>
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-                <SeatItem>01</SeatItem>
-                <SeatItem>02</SeatItem>
-                <SeatItem>03</SeatItem>
-                <SeatItem>04</SeatItem>
-                <SeatItem>05</SeatItem>
+            {seats.seats.map((seat) =>
+                <SeatItem state={seat.isAvailable?'available':'unavailable'}>{seat.name}</SeatItem>
+            )}
             </SeatsContainer>
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle state={'select'} />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle state={'available'} />
                     Disponível
                 </CaptionItem>
                 <CaptionItem>
-                    <CaptionCircle />
+                    <CaptionCircle state={'unavailable'} />
                     Indisponível
                 </CaptionItem>
             </CaptionContainer>
@@ -41,11 +67,11 @@ export default function SeatsPage() {
 
             <FooterContainer>
                 <div>
-                    <img src={"https://br.web.img2.acsta.net/pictures/22/05/16/17/59/5165498.jpg"} alt="poster" />
+                    <img src={seats.movie.posterURL} alt="poster" />
                 </div>
                 <div>
-                    <p>Tudo em todo lugar ao mesmo tempo</p>
-                    <p>Sexta - 14h00</p>
+                    <p>{seats.movie.title}</p>
+                    <p>{seats.day.weekday} - {seats.name}</p>
                 </div>
             </FooterContainer>
 
@@ -96,8 +122,8 @@ const CaptionContainer = styled.div`
     margin: 20px;
 `
 const CaptionCircle = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border: 1px solid ${state=> state.state === 'select'?'#0e7d71':state.state === 'available'? '#7b8b99':'#f7c52b'};
+    background-color: ${state=> state.state === 'select'?'#1aae9a':state.state === 'available'? '#c3cfd9':'#FBE192'};
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -113,8 +139,8 @@ const CaptionItem = styled.div`
     font-size: 12px;
 `
 const SeatItem = styled.div`
-    border: 1px solid blue;         // Essa cor deve mudar
-    background-color: lightblue;    // Essa cor deve mudar
+    border: 1px solid ${state=> state.state === 'select'?'#0e7d71':state.state === 'available'? '#7b8b99':'#f7c52b'};         // Essa cor deve mudar
+    background-color: ${state=> state.state === 'select'?'#1aae9a':state.state === 'available'? '#c3cfd9':'#FBE192'};    // Essa cor deve mudar
     height: 25px;
     width: 25px;
     border-radius: 25px;

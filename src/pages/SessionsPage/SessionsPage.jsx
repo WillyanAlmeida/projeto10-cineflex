@@ -40,10 +40,9 @@ export default function SessionsPage() {
                 {movie.days.map((session) =>
                     <SessionContainer>
                         <p>{session.weekday} - {session.date}</p>
-
                         <ButtonsContainer>
                             {session.showtimes.map((session) =>
-                                <Link to={`/sessoes/${movie.days.id}`} key={session.id} >
+                                <Link to={`/assentos/${session.id}`} key={session.id} >
                                     <button>{session.name}</button>
                                 </Link >)}
                         </ButtonsContainer>
