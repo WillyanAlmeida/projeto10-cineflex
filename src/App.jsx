@@ -18,7 +18,7 @@ export default function App() {
 
                 <Route path='/' element={<HomePage />} />
                     {/* <SeatsPage /> */}
-                    {/* <SessionsPage /> */}
+                  <Route path='/sessoes/:idFilme' element={ <SessionsPage /> }/>
                     {/* <SuccessPage /> */}
 
                 </Routes>
