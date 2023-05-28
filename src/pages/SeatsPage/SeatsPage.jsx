@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Seat from "./Seat";
 import { Link, useParams } from "react-router-dom"
 import styled from "styled-components"
 import axios from "axios";
@@ -6,7 +7,7 @@ import axios from "axios";
 export default function SeatsPage() {
 
     const [seats, setSeats] = useState(undefined);
-
+   
     const parametros = useParams();
     console.log(parametros);
 
@@ -30,19 +31,20 @@ export default function SeatsPage() {
         return <div>Carregando.....</div>
     }
 
+   
+
     return (
         <PageContainer>
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-            {seats.seats.map((seat) =>
-                <SeatItem state={seat.isAvailable?'available':'unavailable'}>{seat.name}</SeatItem>
+            {seats.seats.map((seat) => <Seat seat={seat} />
             )}
             </SeatsContainer>
 
             <CaptionContainer>
                 <CaptionItem>
-                    <CaptionCircle state={'select'} />
+                    <CaptionCircle state={'selected'} />
                     Selecionado
                 </CaptionItem>
                 <CaptionItem>
@@ -122,8 +124,8 @@ const CaptionContainer = styled.div`
     margin: 20px;
 `
 const CaptionCircle = styled.div`
-    border: 1px solid ${state=> state.state === 'select'?'#0e7d71':state.state === 'available'? '#7b8b99':'#f7c52b'};
-    background-color: ${state=> state.state === 'select'?'#1aae9a':state.state === 'available'? '#c3cfd9':'#FBE192'};
+    border: 1px solid ${state=> state.state === 'selected' ?'#0e7d71':state.state === 'available' ? '#7b8b99':'#f7c52b'};
+    background-color: ${state=> state.state === 'selected' ?'#1aae9a':state.state === 'available' ? '#c3cfd9':'#FBE192'};
     height: 25px;
     width: 25px;
     border-radius: 25px;
@@ -138,19 +140,7 @@ const CaptionItem = styled.div`
     align-items: center;
     font-size: 12px;
 `
-const SeatItem = styled.div`
-    border: 1px solid ${state=> state.state === 'select'?'#0e7d71':state.state === 'available'? '#7b8b99':'#f7c52b'};         // Essa cor deve mudar
-    background-color: ${state=> state.state === 'select'?'#1aae9a':state.state === 'available'? '#c3cfd9':'#FBE192'};    // Essa cor deve mudar
-    height: 25px;
-    width: 25px;
-    border-radius: 25px;
-    font-family: 'Roboto';
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px 3px;
-`
+
 const FooterContainer = styled.div`
     width: 100%;
     height: 120px;
