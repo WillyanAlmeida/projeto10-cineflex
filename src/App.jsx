@@ -3,21 +3,25 @@ import HomePage from "./pages/HomePage/HomePage"
 import SeatsPage from "./pages/SeatsPage/SeatsPage"
 import SessionsPage from "./pages/SessionsPage/SessionsPage"
 import SuccessPage from "./pages/SuccessPage/SuccessPage"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route, useSearchParams } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import axios from 'axios';
+import { useState } from "react"
 
 export default function App() {
+
+    let [seatsselected, setSeatsselected] = useState([])
 
     axios.defaults.headers.common['Authorization'] = 'LYBJtjK2liCOeAleBGOoZq8T';
 
     return (
         <>
             <BrowserRouter>
-                <NavContainer>CINEFLEX</NavContainer>
+                <NavContainer >CINEFLEX</NavContainer>
                 <Routes>
 
                 <Route path='/' element={<HomePage />} />
-                    <Route path='/assentos/:idSessao' element={<SeatsPage />} />
+                    <Route path='/assentos/:idSessao' element={<SeatsPage seatsselected={seatsselected} setSeatsselected={setSeatsselected} />} />
                   <Route path='/sessoes/:idFilme' element={ <SessionsPage /> }/>
                     {/* <SuccessPage /> */}
 

@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom"
 import styled from "styled-components"
 import axios from "axios";
 
-export default function SeatsPage() {
+export default function SeatsPage({setSeatsselected, seatsselected}) {
 
     const [seats, setSeats] = useState(undefined);
    
@@ -21,24 +21,24 @@ export default function SeatsPage() {
              console.log(resposta.data);
 
              setSeats(resposta.data)
-
          });
          promise.catch(erro => console.log(erro.response.data));
-
      }, []);
 
      if (seats === undefined) {
         return <div>Carregando.....</div>
     }
 
-   
+    function sendpost (){
+
+    }
 
     return (
         <PageContainer>
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-            {seats.seats.map((seat) => <Seat seat={seat} />
+            {seats.seats.map((seat) => <Seat key={seat.id} seat={seat} seatsselected={seatsselected} setSeatsselected={setSeatsselected} />
             )}
             </SeatsContainer>
 
