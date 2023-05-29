@@ -14,6 +14,7 @@ export default function App() {
     let [seats, setSeats] = useState(undefined);
     let [name, setName] = useState("");
     let [cpf, setCpf] = useState("");
+    const [movie, setMovie] = useState(undefined);
 
     axios.defaults.headers.common['Authorization'] = 'LYBJtjK2liCOeAleBGOoZq8T';
 
@@ -25,8 +26,8 @@ export default function App() {
 
                     <Route path='/' element={<HomePage />} />
                     <Route path='/assentos/:idSessao' element={<SeatsPage  name={name} setName={setName} cpf={cpf} setCpf={setCpf} purchasedseat={purchasedseat} setPurchasedseat={setPurchasedseat} seats={seats} setSeats={setSeats} />} />
-                    <Route path='/sessoes/:idFilme' element={<SessionsPage />} />
-                    <Route path='/sucesso' element={<SuccessPage purchasedseat={purchasedseat} seats={seats} cpf={cpf} name={name} setPurchasedseat={setPurchasedseat} setSeats={setSeats} setCpf={setCpf} setName={setName} />}/>
+                    <Route path='/sessoes/:idFilme' element={<SessionsPage movie={movie} setMovie={setMovie} />} />
+                    <Route path='/sucesso' element={<SuccessPage purchasedseat={purchasedseat} seats={seats} cpf={cpf} name={name} setPurchasedseat={setPurchasedseat} setSeats={setSeats} setCpf={setCpf} setName={setName} movie={movie} setMovie={setMovie}/>}/>
 
                 </Routes>
 

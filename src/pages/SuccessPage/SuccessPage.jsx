@@ -3,28 +3,17 @@ import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 
 
-export default function SuccessPage({ purchasedseat, name, cpf, seats, setPurchasedseat, setSeats, setName, setCpf}) {
-    
+export default function SuccessPage({ purchasedseat, name, cpf, seats, setPurchasedseat, setSeats, setName, setCpf,movie, setMovie }) {
+
     const navigate = useNavigate();
 
     function home() {
-        console.log(purchasedseat)
-        console.log(name)
-        console.log(cpf)
-        console.log(seats)
-        
         setPurchasedseat([]);
-        
         setCpf("");
         setName("");
-        
         setSeats(undefined);
-        
-        console.log(name)
-        console.log(cpf)
-        console.log(seats)
         navigate("/")
-
+        setMovie(undefined)
     }
 
     return (
@@ -34,15 +23,12 @@ export default function SuccessPage({ purchasedseat, name, cpf, seats, setPurcha
             <TextContainer data-test="movie-info">
                 <strong><p>Filme e sessão</p></strong>
                 <p>{seats.movie.title}</p>
-                <p>{seats.day.weekday} - {seats.name}</p>
+                <p>{seats.day.date} - {seats.name}</p>
             </TextContainer>
 
-            <TextContainer data-test="seats-info">
+            <TextContainer data-test="seats-info" >
                 <strong><p>Ingressos</p></strong>
-
                 {purchasedseat.map((x) => <p>Assento {x} </p>)}
-
-
             </TextContainer>
 
             <TextContainer data-test="client-info">

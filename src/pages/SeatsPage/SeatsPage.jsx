@@ -23,8 +23,6 @@ export default function SeatsPage({setPurchasedseat, purchasedseat, name, setNam
          const promise = axios.get(url);
 
          promise.then(resposta => {
-             console.log(resposta.data);
-
              setSeats(resposta.data)
          });
          promise.catch(erro => console.log(erro.response.data));
@@ -37,20 +35,16 @@ export default function SeatsPage({setPurchasedseat, purchasedseat, name, setNam
     function sendpost (e){
         
         e.preventDefault();
-        console.log (seatsselected)
-        console.log (name)
-        console.log (cpf)
         
          const requisicao = axios.post("https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many", {
              ids: seatsselected,
              name: name,
 		     cpf: cpf})
          requisicao.then(() => navigate("/sucesso"))
-         // requisicao.then(()=>console.log(requisicao)) 
+        
          requisicao.catch( erro => {
              const {mensagem} = erro.response.data;
              alert(mensagem);
-             console.log(mensagem)
            });        
 
 

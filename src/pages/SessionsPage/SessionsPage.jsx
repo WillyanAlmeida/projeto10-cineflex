@@ -4,15 +4,12 @@ import styled from "styled-components"
 import axios from "axios";
 
 
-export default function SessionsPage() {
+export default function SessionsPage({movie, setMovie}) {
 
-    const [movie, setMovie] = useState(undefined);
+    
 
     const parametros = useParams();
-    console.log(parametros);
-    console.log(parametros.idFilme);
-
-
+    
     useEffect(() => {
 
         const url = `https://mock-api.driven.com.br/api/v8/cineflex/movies/${parametros.idFilme}/showtimes`;
@@ -20,10 +17,7 @@ export default function SessionsPage() {
         const promise = axios.get(url);
 
         promise.then(resposta => {
-            console.log(resposta.data);
-
             setMovie(resposta.data)
-
         });
         promise.catch(erro => console.log(erro.response.data));
 

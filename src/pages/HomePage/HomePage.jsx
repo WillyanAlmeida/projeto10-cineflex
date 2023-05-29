@@ -13,10 +13,8 @@ export default function HomePage() {
 
         requisicao.then(resposta => {
             setMovies(resposta.data);
-            console.log(resposta.data)
-        });
+            });
     }, []);
-
 
     return (
         <PageContainer>
