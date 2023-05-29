@@ -3,7 +3,7 @@ import styled from "styled-components"
 
 
 
-export default function Seat({ seat }) {
+export default function Seat({ seat, seatsselected, setSeatsselected, purchasedseat, setPurchasedseat }) {
 
     let [select, setSelect] = useState('notselected');
 
@@ -14,19 +14,29 @@ export default function Seat({ seat }) {
             alert('Esse assento não está disponível')
         } else {
             if (select === 'notselected') {
-
+                seatsselected.push(seat.id)
+                setSeatsselected([...seatsselected])
+                purchasedseat.push(seat.name)
+                setPurchasedseat([...purchasedseat])
                 setSelect('selected');
+                console.log(seatsselected)
+                console.log(purchasedseat)
             } else {
-
+                seatsselected = seatsselected.filter(item => item != seat.id);
+                setSeatsselected([...seatsselected])
+                purchasedseat = purchasedseat.filter(item => item != seat.name);
+                setPurchasedseat([...purchasedseat])
                 setSelect('notselected');
+                console.log(seatsselected)
+                console.log(purchasedseat)
             }
-           
+
             console.log(seat.id)
         }
     }
 
     return (
-        <SeatItem onClick={selectseat} state={select === 'notselected' ? seat.isAvailable : select}>{seat.name}</SeatItem>
+        <SeatItem data-test="seat"  onClick={selectseat} state={select === 'notselected' ? seat.isAvailable : select}>{seat.name}</SeatItem>
     )
 }
 

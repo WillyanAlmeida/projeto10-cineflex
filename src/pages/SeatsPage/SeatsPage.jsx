@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import Seat from "./Seat";
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import axios from "axios";
 
-export default function SeatsPage({setSeatsselected, seatsselected}) {
+export default function SeatsPage({setPurchasedseat, purchasedseat, name, setName, cpf, setCpf, seats, setSeats}) {
 
-    const [seats, setSeats] = useState(undefined);
+    let [seatsselected, setSeatsselected]= useState([])
+
+    const navigate = useNavigate();
+
+    
+   
    
     const parametros = useParams();
     console.log(parametros);
@@ -29,7 +34,25 @@ export default function SeatsPage({setSeatsselected, seatsselected}) {
         return <div>Carregando.....</div>
     }
 
-    function sendpost (){
+    function sendpost (e){
+        
+        e.preventDefault();
+        console.log (seatsselected)
+        console.log (name)
+        console.log (cpf)
+        
+         const requisicao = axios.post("https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many", {
+             ids: seatsselected,
+             name: name,
+		     cpf: cpf})
+         requisicao.then(() => navigate("/sucesso"))
+         // requisicao.then(()=>console.log(requisicao)) 
+         requisicao.catch( erro => {
+             const {mensagem} = erro.response.data;
+             alert(mensagem);
+             console.log(mensagem)
+           });        
+
 
     }
 
@@ -38,7 +61,7 @@ export default function SeatsPage({setSeatsselected, seatsselected}) {
             Selecione o(s) assento(s)
 
             <SeatsContainer>
-            {seats.seats.map((seat) => <Seat key={seat.id} seat={seat} seatsselected={seatsselected} setSeatsselected={setSeatsselected} />
+            {seats.seats.map((seat) => <Seat key={seat.id} seat={seat} seatsselected={seatsselected} setSeatsselected={setSeatsselected} setPurchasedseat={setPurchasedseat} purchasedseat={purchasedseat} />
             )}
             </SeatsContainer>
 
@@ -57,17 +80,17 @@ export default function SeatsPage({setSeatsselected, seatsselected}) {
                 </CaptionItem>
             </CaptionContainer>
 
-            <FormContainer>
-                Nome do Comprador:
-                <input placeholder="Digite seu nome..." />
+            <FormContainer onSubmit={sendpost}>
+                <label htmlFor="name">Nome do Comprador:</label>
+                <input data-test="client-name"  id="name"  required type="text" placeholder="Digite seu nome..." value={name} onChange={e => setName(e.target.value)}/>
 
-                CPF do Comprador:
-                <input placeholder="Digite seu CPF..." />
+                <label htmlFor="cpf">CPF do Comprador:</label>
+                <input data-test="client-cpf" id="cpf" required placeholder="Digite seu CPF..." value={cpf} onChange={e => setCpf(e.target.value)} />
 
-                <button>Reservar Assento(s)</button>
+                <button data-test="book-seat-btn"  type="submit">Reservar Assento(s)</button>
             </FormContainer>
 
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <div>
                     <img src={seats.movie.posterURL} alt="poster" />
                 </div>
@@ -102,7 +125,7 @@ const SeatsContainer = styled.div`
     justify-content: center;
     margin-top: 20px;
 `
-const FormContainer = styled.div`
+const FormContainer = styled.form`
     width: calc(100vw - 40px); 
     display: flex;
     flex-direction: column;

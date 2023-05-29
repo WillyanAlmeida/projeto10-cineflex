@@ -10,7 +10,10 @@ import { useState } from "react"
 
 export default function App() {
 
-    let [seatsselected, setSeatsselected] = useState([])
+    let [purchasedseat, setPurchasedseat] = useState([])
+    let [seats, setSeats] = useState(undefined);
+    let [name, setName] = useState("");
+    let [cpf, setCpf] = useState("");
 
     axios.defaults.headers.common['Authorization'] = 'LYBJtjK2liCOeAleBGOoZq8T';
 
@@ -20,10 +23,10 @@ export default function App() {
                 <NavContainer >CINEFLEX</NavContainer>
                 <Routes>
 
-                <Route path='/' element={<HomePage />} />
-                    <Route path='/assentos/:idSessao' element={<SeatsPage seatsselected={seatsselected} setSeatsselected={setSeatsselected} />} />
-                  <Route path='/sessoes/:idFilme' element={ <SessionsPage /> }/>
-                    {/* <SuccessPage /> */}
+                    <Route path='/' element={<HomePage />} />
+                    <Route path='/assentos/:idSessao' element={<SeatsPage  name={name} setName={setName} cpf={cpf} setCpf={setCpf} purchasedseat={purchasedseat} setPurchasedseat={setPurchasedseat} seats={seats} setSeats={setSeats} />} />
+                    <Route path='/sessoes/:idFilme' element={<SessionsPage />} />
+                    <Route path='/sucesso' element={<SuccessPage purchasedseat={purchasedseat} seats={seats} cpf={cpf} name={name} setPurchasedseat={setPurchasedseat} setSeats={setSeats} setCpf={setCpf} setName={setName} />}/>
 
                 </Routes>
 
